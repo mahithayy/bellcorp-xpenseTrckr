@@ -12,6 +12,7 @@ export default function Login() {
     try {
       const { data } = await API.post("/auth/login", form);
       login(data.token);
+      localStorage.setItem("userName", data.name);
       navigate("/"); // goes to dashboard
     } catch {
       alert("Invalid credentials");

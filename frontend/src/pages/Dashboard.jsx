@@ -27,7 +27,7 @@ export default function Dashboard() {
   }, {});
 
   const recent = transactions.slice(0, 5);
-
+const userName = localStorage.getItem("userName") || "User";
   return (
   <div className="p-6 max-w-5xl mx-auto space-y-8">
     <div className="flex justify-between items-end">
@@ -74,10 +74,12 @@ export default function Dashboard() {
     {/* Split View: Add Form & Recent List */}
     <div className="grid md:grid-cols-3 gap-6">
       {/* Left: Add Transaction */}
-      <div className="md:col-span-1 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 h-fit">
-        <h2 className="font-bold text-lg mb-4 text-slate-800">New Expense</h2>
-        <TransactionForm refresh={load} />
-      </div>
+      {/* Left: Add Transaction */}
+<div className="md:col-span-1 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 h-fit">
+  <h2 className="font-bold text-lg mb-4 text-slate-800">New Expense</h2>
+  {/* Pass the check: Is the list length > 0? */}
+  <TransactionForm refresh={load} hasData={transactions.length > 0} />
+</div>
 
       {/* Right: Recent Transactions */}
       <div className="md:col-span-2 bg-white p-6 rounded-2xl shadow-lg border border-slate-100">

@@ -65,76 +65,72 @@ useEffect(() => {
 }, [filters]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Transaction Explorer</h1>
+  <div className="p-6 max-w-4xl mx-auto">
+    <h1 className="text-3xl font-bold mb-6 text-slate-800">Transaction Explorer</h1>
 
-      <Filters setFilters={handleFilters} />
+    <Filters setFilters={handleFilters} />
 
-      {/* Empty state */}
-      {transactions.length === 0 ? (
-        //
-        <div className="mt-6 text-center text-gray-500">
-    <p>No transactions found.</p>
-    <p className="text-sm">Try adjusting filters.</p>
-  </div>
-      ) : (
-        transactions.map((tx) => (
-          <div key={tx._id} className="border p-3 my-2 rounded">
-            <h3 className="font-semibold">{tx.title}</h3>
-            <p>₹{tx.amount} • {tx.category}</p>
-            <p className="text-sm text-gray-500">
-              {new Date(tx.date).toLocaleDateString()}
-            </p>
+    {/* Empty state */}
+    {transactions.length === 0 ? (
+      <div className="mt-10 text-center text-slate-400">
+        <p className="text-lg">No transactions found.</p>
+        <p className="text-sm">Try adjusting your filters.</p>
+      </div>
+    ) : (
+      <div className="space-y-4">
+        {transactions.map((tx) => (
+          <div key={tx._id} className="bg-white border border-slate-100 p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+
             {/* CHECK IF EDITING THIS ROW */}
             {editingId === tx._id ? (
-              // EDIT MODE
-              <div className="flex-1 grid grid-cols-3 gap-2 mr-4">
-                <input
-                  className="border p-1"
-                  value={editForm.title}
-                  onChange={(e) => setEditForm({...editForm, title: e.target.value})}
-                />
-                <input
-                  className="border p-1"
-                  type="number"
-                  value={editForm.amount}
-                  onChange={(e) => setEditForm({...editForm, amount: e.target.value})}
-                />
-                 <input
-                  className="border p-1"
-                  value={editForm.category}
-                  onChange={(e) => setEditForm({...editForm, category: e.target.value})}
-                />
+              // === EDIT MODE ===
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-3">
+                    <input className="border p-2 rounded" value={editForm.title} onChange={(e) => setEditForm({...editForm, title: e.target.value})} placeholder="Title" />
+                    <input className="border p-2 rounded" type="number" value={editForm.amount} onChange={(e) => setEditForm({...editForm, amount: e.target.value})} placeholder="Amount" />
+                    <input className="border p-2 rounded" value={editForm.category} onChange={(e) => setEditForm({...editForm, category: e.target.value})} placeholder="Category" />
+                </div>
+                <div className="flex gap-2">
+                    <button onClick={() => saveEdit(tx._id)} className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">Save</button>
+                    <button onClick={cancelEdit} className="bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300">Cancel</button>
+                </div>
               </div>
             ) : (
-              // VIEW MODE
-              <div>
-                <h3 className="font-bold">{tx.title}</h3>
-                <p className="text-sm text-gray-600">{tx.amount} • {tx.category}</p>
-                <p className="text-xs text-gray-400">{new Date(tx.date).toLocaleDateString()}</p>
+              // === VIEW MODE ===
+              <div className="flex justify-between items-start">
+                <div>
+                   <div className="flex items-center gap-3">
+                       <h3 className="font-bold text-lg text-slate-800">{tx.title}</h3>
+                       <span className="text-xs font-semibold bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full uppercase tracking-wider">
+                         {tx.category}
+                       </span>
+                   </div>
+                   <p className="text-sm text-slate-500 mt-1">{new Date(tx.date).toLocaleDateString()}</p>
+
+                   {/* SHOW NOTES IF THEY EXIST */}
+                   {tx.notes && (
+                     <p className="text-sm text-slate-600 italic mt-2 bg-slate-50 p-2 rounded border-l-2 border-indigo-200">
+                       "{tx.notes}"
+                     </p>
+                   )}
+                </div>
+
+                <div className="text-right">
+                  <p className="text-xl font-bold text-slate-900 mb-2">₹{tx.amount}</p>
+                  <div className="flex gap-2 justify-end">
+                    <button onClick={() => startEdit(tx)} className="text-sm text-indigo-600 font-medium hover:underline">Edit</button>
+                    <button onClick={() => handleDelete(tx._id)} className="text-sm text-rose-500 font-medium hover:underline">Delete</button>
+                  </div>
+                </div>
               </div>
             )}
-
-            {/* ACTION BUTTONS */}
-            <div className="flex gap-2">
-              {editingId === tx._id ? (
-                <>
-                  <button onClick={() => saveEdit(tx._id)} className="text-green-600 font-bold border px-2 rounded">Save</button>
-                  <button onClick={cancelEdit} className="text-gray-500 border px-2 rounded">Cancel</button>
-                </>
-              ) : (
-                <>
-                  <button onClick={() => startEdit(tx)} className="text-blue-500 hover:text-blue-700">Edit</button>
-                  <button onClick={() => handleDelete(tx._id)} className="text-red-500 hover:text-red-700 ml-2">Delete</button>
-                </>
-              )}
-            </div>
           </div>
-        ))
-      )}
+        ))}
+      </div>
+    )}
 
-      {/* Pagination */}
-      <div className="mt-4 flex gap-2">
+    {/* Pagination controls... */}
+    <div className="mt-4 flex gap-2">
         <button
           disabled={page === 1}
           className="px-3 py-1 border"
@@ -144,8 +140,8 @@ useEffect(() => {
         </button>
 
         <p className="text-sm text-gray-500 mb-2">
-  Showing page {page} of {pages}
-</p>
+          Showing page {page} of {pages}
+        </p>
 
         <button
           disabled={page === pages}
@@ -154,7 +150,7 @@ useEffect(() => {
         >
           Next
         </button>
-      </div>
     </div>
-  );
+  </div>
+);
 }

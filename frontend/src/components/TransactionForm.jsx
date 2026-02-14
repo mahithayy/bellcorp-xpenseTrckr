@@ -35,7 +35,7 @@ export default function TransactionForm({ refresh }) {
 
   return (
     <div className="space-y-3">
-      {!isTyping && (
+      {!isTyping && !hasData && (
         <p className="text-sm text-gray-500">
           Start by entering your first expense ✨
         </p>

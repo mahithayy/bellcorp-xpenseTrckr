@@ -9,13 +9,13 @@ const generateToken = (id) =>
 
 router.post("/register", async (req, res) => {
   const user = await User.create(req.body);
-  res.json({ token: generateToken(user._id) });
+  res.json({ token: generateToken(user._id),name: user.name });
 });
 
 router.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (user && await user.matchPassword(req.body.password)) {
-    res.json({ token: generateToken(user._id) });
+    res.json({ token: generateToken(user._id),name: user.name });
   } else {
     res.status(401).json({ message: "Invalid credentials" });
   }
