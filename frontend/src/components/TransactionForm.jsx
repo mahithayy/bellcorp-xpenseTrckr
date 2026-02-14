@@ -7,63 +7,76 @@ export default function TransactionForm({ refresh }) {
     amount: "",
     category: "",
     date: "",
-    notes: "" // new field
+    notes: ""
   });
 
+  const isTyping = form.title || form.amount || form.category;
+
   const submit = async () => {
-  try {
-    await API.post("/transactions", {
-      ...form,
-      amount: Number(form.amount),
-    });
+    try {
+      await API.post("/transactions", {
+        ...form,
+        amount: Number(form.amount),
+      });
 
-    await refresh(); // wait for reload
+      await refresh();
 
-    setForm({
-      title: "",
-      amount: "",
-      category: "",
-      date: "",
-      notes: "",
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-
+      setForm({
+        title: "",
+        amount: "",
+        category: "",
+        date: "",
+        notes: "",
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
-    <div className="p-4 border rounded mb-4">
+    <div className="space-y-3">
+      {!isTyping && (
+        <p className="text-sm text-gray-500">
+          Start by entering your first expense ✨
+        </p>
+      )}
+
       <input
         placeholder="Expense name"
         value={form.title}
         onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
+
       <input
         placeholder="Amount"
         type="number"
         value={form.amount}
         onChange={(e) => setForm({ ...form, amount: e.target.value })}
       />
+
       <input
         placeholder="Category"
         value={form.category}
         onChange={(e) => setForm({ ...form, category: e.target.value })}
       />
+
       <input
         type="date"
         value={form.date}
         onChange={(e) => setForm({ ...form, date: e.target.value })}
       />
-<input
-  placeholder="Notes (optional)"
-  value={form.notes || ""}
-  onChange={(e) => setForm({ ...form, notes: e.target.value })}
-/>
 
-      <button className="bg-blue-500 text-white px-3 py-1" onClick={submit}>
-        Add
+      <input
+        placeholder="Notes (optional)"
+        value={form.notes}
+        onChange={(e) => setForm({ ...form, notes: e.target.value })}
+      />
+
+      <button
+        className="bg-blue-600 text-white w-full hover:bg-blue-700"
+        onClick={submit}
+      >
+        Add Expense
       </button>
     </div>
   );

@@ -2,16 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom global styles */
-
+/* Global */
 body {
   @apply bg-gray-100 text-gray-900;
 }
 
 input {
-  @apply border rounded px-3 py-2;
+  @apply border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400;
 }
 
 button {
-  @apply rounded px-4 py-2 font-medium;
+  @apply rounded px-4 py-2 font-medium transition;
 }
