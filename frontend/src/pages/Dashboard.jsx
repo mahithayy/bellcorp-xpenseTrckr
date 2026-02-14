@@ -5,11 +5,13 @@ import TransactionList from "../components/TransactionList";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
-
+const [userName, setUserName] = useState("User");
   const load = useCallback(async () => {
     try {
       const res = await API.get("/transactions");
       setTransactions(res.data.data || []);
+      const userRes = await API.get("/auth/me");
+      setUserName(userRes.data.name);
     } catch (err) {
       console.error("Load failed:", err);
     }
@@ -27,7 +29,7 @@ export default function Dashboard() {
   }, {});
 
   const recent = transactions.slice(0, 5);
-const userName = localStorage.getItem("userName") || "User";
+//const userName = localStorage.getItem("userName") || "User";
   return (
   <div className="p-6 max-w-5xl mx-auto space-y-8">
     <div className="flex justify-between items-end">
