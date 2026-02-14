@@ -73,11 +73,11 @@ export default function TransactionForm({ refresh }) {
       />
 
       <button
-        className="bg-blue-600 text-white w-full hover:bg-blue-700"
-        onClick={submit}
-      >
-        Add Expense
-      </button>
+  className="w-full bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 shadow-md shadow-indigo-200 font-bold transition-transform active:scale-95"
+  onClick={submit}
+>
+  + Add Expense
+</button>
     </div>
   );
 }
