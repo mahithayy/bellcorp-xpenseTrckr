@@ -1,3 +1,4 @@
+import React from "react";
 export default function TransactionList({ transactions }) {
   return (
     <div className="space-y-2">
