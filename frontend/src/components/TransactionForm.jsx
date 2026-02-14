@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import API from "../api/axios";
 
-export default function TransactionForm({ refresh }) {
+export default function TransactionForm({ refresh,hasData}) {
   const [form, setForm] = useState({
     title: "",
     amount: "",
