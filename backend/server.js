@@ -13,7 +13,7 @@ connectDB();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://bellcorp-xpense-trckr.vercel.app/login"
+    "https://bellcorp-xpense-trckr.vercel.app"
   ],
   credentials: true
 }));
