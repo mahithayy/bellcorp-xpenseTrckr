@@ -36,7 +36,7 @@ export default function TransactionForm({ refresh }) {
   return (
     <div className="p-4 border rounded mb-4">
       <input
-        placeholder="Title"
+        placeholder="Expense name"
         value={form.title}
         onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
