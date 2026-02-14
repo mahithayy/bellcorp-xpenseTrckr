@@ -33,9 +33,16 @@ const handleFilters = (newFilters) => {
 };
 // --- EDIT FUNCTIONS ---
   const startEdit = (tx) => {
-    setEditingId(tx._id);
-    setEditForm({ title: tx.title, amount: tx.amount, category: tx.category });
-  };
+  setEditingId(tx._id);
+  // Add date (formatted) and notes to the form
+  setEditForm({
+    title: tx.title,
+    amount: tx.amount,
+    category: tx.category,
+    date: new Date(tx.date).toISOString().split('T')[0], // Format for input type="date"
+    notes: tx.notes || ""
+  });
+};
 
   const cancelEdit = () => {
     setEditingId(null);
@@ -84,17 +91,57 @@ useEffect(() => {
             {/* CHECK IF EDITING THIS ROW */}
             {editingId === tx._id ? (
               // === EDIT MODE ===
-              <div className="space-y-3">
-                <div className="grid grid-cols-3 gap-3">
-                    <input className="border p-2 rounded" value={editForm.title} onChange={(e) => setEditForm({...editForm, title: e.target.value})} placeholder="Title" />
-                    <input className="border p-2 rounded" type="number" value={editForm.amount} onChange={(e) => setEditForm({...editForm, amount: e.target.value})} placeholder="Amount" />
-                    <input className="border p-2 rounded" value={editForm.category} onChange={(e) => setEditForm({...editForm, category: e.target.value})} placeholder="Category" />
-                </div>
-                <div className="flex gap-2">
-                    <button onClick={() => saveEdit(tx._id)} className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">Save</button>
-                    <button onClick={cancelEdit} className="bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300">Cancel</button>
-                </div>
-              </div>
+
+<div className="space-y-3 bg-slate-50 p-4 rounded-lg border border-indigo-100">
+  {/* Row 1: Main Details */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <input
+      className="border p-2 rounded"
+      value={editForm.title}
+      onChange={(e) => setEditForm({...editForm, title: e.target.value})}
+      placeholder="Title"
+    />
+    <input
+      className="border p-2 rounded"
+      type="number"
+      value={editForm.amount}
+      onChange={(e) => setEditForm({...editForm, amount: e.target.value})}
+      placeholder="Amount"
+    />
+    <input
+      className="border p-2 rounded"
+      value={editForm.category}
+      onChange={(e) => setEditForm({...editForm, category: e.target.value})}
+      placeholder="Category"
+    />
+  </div>
+
+  {/* Row 2: Date & Notes (New) */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+     <input
+       className="border p-2 rounded"
+       type="date"
+       value={editForm.date}
+       onChange={(e) => setEditForm({...editForm, date: e.target.value})}
+     />
+     <input
+       className="border p-2 rounded md:col-span-2"
+       value={editForm.notes}
+       onChange={(e) => setEditForm({...editForm, notes: e.target.value})}
+       placeholder="Add notes..."
+     />
+  </div>
+
+  {/* Actions */}
+  <div className="flex gap-2 pt-2">
+    <button onClick={() => saveEdit(tx._id)} className="bg-green-600 text-white px-4 py-1.5 rounded text-sm hover:bg-green-700 font-medium shadow-sm">
+      Save Changes
+    </button>
+    <button onClick={cancelEdit} className="bg-white border border-slate-300 text-slate-600 px-4 py-1.5 rounded text-sm hover:bg-slate-50 font-medium">
+      Cancel
+    </button>
+  </div>
+</div>
             ) : (
               // === VIEW MODE ===
               <div className="flex justify-between items-start">

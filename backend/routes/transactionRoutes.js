@@ -28,7 +28,7 @@ router.get("/", auth, async (req, res) => {
   ];
 }
 
-  if (category) query.category = category;
+  if (category) query.category = { $regex: category, $options: "i" };
   if (min || max) query.amount = { $gte: min || 0, $lte: max || Infinity };
 
   if (fromDate || toDate) {
