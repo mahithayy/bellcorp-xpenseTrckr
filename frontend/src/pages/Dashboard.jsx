@@ -32,7 +32,7 @@ const userName = localStorage.getItem("userName") || "User";
   <div className="p-6 max-w-5xl mx-auto space-y-8">
     <div className="flex justify-between items-end">
         <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Dashboard</h1>
-        <span className="text-sm text-slate-400">Welcome back</span>
+        <span className="text-sm text-slate-400">Welcome back, {userName}</span>
     </div>
 
     {/* Welcome Helper */}
