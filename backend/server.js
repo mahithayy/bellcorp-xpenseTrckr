@@ -9,7 +9,15 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://<your-vercel-url>.vercel.app"
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Routes
